@@ -767,8 +767,9 @@
         const message = document.getElementById("message").value.trim();
       });
       // ------------------------------------------------------
+
       (function () {
-        emailjs.init("5zS5mIhGNXG8wMaIz"); // Replace with your public key
+        emailjs.init("5zS5mIhGNXG8wMaIz"); // your public key
       })();
 
       document
@@ -776,11 +777,22 @@
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
+          // Get form values
+          const name = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const message = document.getElementById("message").value.trim();
+
+          // ✅ Basic validation
+          if (!name || !email || !message) {
+            alert("⚠️ Please fill out all fields before sending.");
+            return; // stop here, don't send
+          }
+
+          // Send with EmailJS
           emailjs.sendForm("service_bin757h", "template_8b4otvt", this).then(
             function () {
               alert("✅ Message sent successfully!");
-              form.reset();
-              form.classList.remove("was-validated"); // optional: reset validation UI
+              document.getElementById("contactForm").reset(); // clear form
             },
             function (error) {
               alert("❌ Failed to send: " + JSON.stringify(error));
